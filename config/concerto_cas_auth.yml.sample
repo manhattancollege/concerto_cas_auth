@@ -1,0 +1,39 @@
+# ============================================================
+# THIS FILE GOES IN THE CONCERTO APPLICATION CONFIG/ DIRECTORY
+# ============================================================
+
+# Configuration options for omniauth-cas 
+#  visit https://github.com/dlindahl/omniauth-cas 
+#  for more details in README
+
+# ----------------
+# Required options
+# ----------------
+# host: 
+# url: 
+
+# -----------------------------------------------
+# Configurable options for values returned by CAS
+# -----------------------------------------------
+# uid_key:
+# name_key:
+# email_key:
+# first_name_key:
+# last_name_key:
+# location_key:
+# image_key:
+# phone_key:
+
+# --------------------------
+# Other configurable options
+# --------------------------
+# port:
+# ssl:
+# service_validate_url:
+# logout_url:
+# login_url:
+# uid_field:
+# ca_path:
+# disable_ssl_verification:
+# on_single_sign_out:
+

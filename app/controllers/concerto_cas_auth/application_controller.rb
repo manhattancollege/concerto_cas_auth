@@ -2,7 +2,10 @@ module ConcertoCasAuth
   class ApplicationController < ::ApplicationController
 
     def find_from_omniauth(cas_hash)
-      if identity = Identity.find_by_uid(cas_hash.uid)
+      # Get any configuration options for customized CAS return value identifiers 
+      omniauth_keys = ConcertoCasAuth::Engine.config.omniauth_keys
+
+      if identity = Identity.find_by_uid(cas_hash[omniauth_keys["uid_key"]])
         # Check if user already exists
         return identity.user
       else
@@ -11,8 +14,8 @@ module ConcertoCasAuth
 
         # Set user attributes
         user.is_admin = false
-        user.first_name = cas_hash.first_name
-        user.email = cas_hash.email
+        user.first_name = cas_hash[omniauth_keys["first_name_key"]]
+        user.email = cas_hash[omniauth_keys["email_key"]]
         user.password, user.password_confirmation = Devise.friendly_token.first(8)
 
         if !User.exists?
@@ -36,7 +39,7 @@ module ConcertoCasAuth
         end
 
         if user.save
-          Identity.create(uid: cas_hash.uid, user_id: user.id)
+          Identity.create(uid: cash_hash[omniauth_keys["uid_key"]], user_id: user.id)
           return user 
         else 
           return nil 
