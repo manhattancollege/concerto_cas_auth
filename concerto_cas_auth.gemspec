@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = ConcertoCasAuth::VERSION
   s.authors     = ["Gabe Perez"]
   s.email       = ["perez283@gmail.com"]
-  s.homepage    = "concerto-signage.org"
+  s.homepage    = "http://www.concerto-signage.org"
   s.summary     = "Provides user authentication using CAS"
   s.description = "Authorize Concerto users with CAS"
   s.license     = "Apache-2.0"
@@ -19,4 +19,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 3.2.9"
   s.add_dependency "omniauth-cas"
+  s.add_dependency "concerto_identity", "~> 0.0.1"
+
 end
