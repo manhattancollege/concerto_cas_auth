@@ -2,6 +2,7 @@ module ConcertoCasAuth
 
   require 'omniauth'
   require 'omniauth-cas'
+  require 'concerto_identity'
 
   class Engine < ::Rails::Engine
     isolate_namespace ConcertoCasAuth
@@ -16,7 +17,7 @@ module ConcertoCasAuth
 
         add_view_hook "ApplicationController", :signin_hook, :partial => "concerto_cas_auth/omniauth_cas/signin"
 
-      end 
-    end 
+      end
+    end
   end
 end

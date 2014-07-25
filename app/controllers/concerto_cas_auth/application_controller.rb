@@ -1,15 +1,17 @@
 module ConcertoCasAuth
   class ApplicationController < ::ApplicationController
 
+    require 'concerto_identity'
+
     def find_from_omniauth(cas_hash)
-      # Get any configuration options for customized CAS return value identifiers 
+      # Get any configuration options for customized CAS return value identifiers
       omniauth_keys = ConcertoCasAuth::Engine.config.omniauth_keys
 
-      if identity = Identity.find_by_uid(cas_hash[omniauth_keys["uid_key"]])
+      if identity = ConcertoIdentity::Identity.find_by_user_id(cas_hash[omniauth_keys["uid_key"]])
         # Check if user already exists
         return identity.user
       else
-        # Add a new user via omniauth cas details 
+        # Add a new user via omniauth cas details
         user = User.new
 
         # Set user attributes
@@ -39,10 +41,10 @@ module ConcertoCasAuth
         end
 
         if user.save
-          Identity.create(uid: cash_hash[omniauth_keys["uid_key"]], user_id: user.id)
-          return user 
-        else 
-          return nil 
+          ConcertoIdentity::Identity.create(provider: "cas", external_id: cash_hash[omniauth_keys["uid_key"]], user_id: user.id)
+          return user
+        else
+          return nil
         end
       end
     end
