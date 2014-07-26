@@ -41,7 +41,7 @@ module ConcertoCasAuth
         end
 
         if user.save
-          ConcertoIdentity::Identity.create(provider: "cas", external_id: cash_hash[omniauth_keys["uid_key"]], user_id: user.id)
+          ConcertoIdentity::Identity.create(provider: "cas", external_id: cas_hash[omniauth_keys["uid_key"]], user_id: user.id)
           return user
         else
           return nil
