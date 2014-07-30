@@ -9,8 +9,8 @@
 # ----------------
 # Required options
 # ----------------
-# host: 
-# url: 
+host: cas.example.org
+url: https://cas.example.org/cas
 
 # -----------------------------------------------
 # Configurable options for values returned by CAS

@@ -19,6 +19,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 3.2.9"
   s.add_dependency "omniauth-cas"
-  s.add_dependency "concerto_identity", "~> 0.0.1"
+  s.add_dependency "concerto_identity", "~> 0.0.2"
 
 end
