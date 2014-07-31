@@ -1,5 +1,5 @@
 # Check if our ConcertoConfig values have been created yet
-#   (this prevents issues with initializing omniauth-cas on first install
+#   (this prevents issues with initializing omniauth-cas on first install)
 cas_config = ConcertoConfig.where(:category => "CAS User Authentication")
 if cas_config.length == 6 
   # Store omniauth config values from main application's ConcertoConfig
@@ -12,7 +12,7 @@ if cas_config.length == 6
     :last_name_key => ConcertoConfig[:cas_last_name_key]
   }
 else 
-  # Require ConcertoConfig keys have not been created, fallback to defaults
+  # Required ConcertoConfig keys have not been created, fallback to defaults
   omniauth_config = {
     :host => "cas.example.org",
     :url => "https://cas.example.org/cas",
