@@ -5,9 +5,6 @@ module ConcertoCasAuth
 
     def cas_auth
       cas_hash = request.env["omniauth.auth"]
-
-      render text: cas_hash
-=begin
       user = find_from_omniauth(cas_hash)
 
       if !user
@@ -24,7 +21,6 @@ module ConcertoCasAuth
         sign_in user
         redirect_to "/"
       end
-=end
     end
 
   end
