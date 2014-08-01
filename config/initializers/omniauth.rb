@@ -1,15 +1,32 @@
-# Check if our ConcertoConfig values have been created yet
-#   (this prevents issues with initializing omniauth-cas on first install)
+# Concerto Configs are created if they don't exist already
+#   these are used to initialize and configure omniauth-cas 
+ConcertoConfig.make_concerto_config("cas_url", "https://cas.example.org/cas", 
+  :value_type => "string", 
+  :value_default => "https://cas.example.org/cas", 
+  :category => 'CAS User Authentication', 
+  :seq_no => 1, 
+  :description =>"Defines the url of your CAS server")
 
+ConcertoConfig.make_concerto_config("cas_uid_key", "user", 
+  :value_type => "string", 
+  :value_default => "user", 
+  :category => 'CAS User Authentication', 
+  :seq_no => 2, 
+  :description =>"Your user's unique identifier.")
+
+ConcertoConfig.make_concerto_config("cas_email_key", "email", 
+  :value_type => "string", 
+  :value_default => "email", 
+  :category => 'CAS User Authentication', 
+  :seq_no => 3, 
+  :description =>"The data attribute containing user email address")
 
 # Store omniauth config values from main application's ConcertoConfig
 omniauth_config = {
   :host => URI.parse(ConcertoConfig[:cas_url]).host,
   :url => ConcertoConfig[:cas_url],
   :uid_key => ConcertoConfig[:cas_uid_key],
-  :email_key => ConcertoConfig[:cas_email_key],
-  :first_name_key => ConcertoConfig[:cas_first_name_key],
-  :last_name_key => ConcertoConfig[:cas_last_name_key]
+  :email_key => ConcertoConfig[:cas_email_key]
 }
 
 # configure omniauth-cas gem based on specified yml configs

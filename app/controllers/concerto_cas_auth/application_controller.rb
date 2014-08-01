@@ -28,11 +28,6 @@ module ConcertoCasAuth
           user.first_name = cas_hash[omniauth_keys["uid_key"]]
         end
 
-        # Last name is optional
-        if !cas_hash[omniauth_keys["last_name_key"]].nil?
-          user.last_name = cas_hash[omniauth_keys["last_name_key"]]
-        end
-
         # Email is required for user validation
         user.email = cas_hash[omniauth_keys["email_key"]]
 
