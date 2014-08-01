@@ -16,32 +16,14 @@ module ConcertoCasAuth
         # Add our concerto_cas_auth route to the main application
         add_route("concerto_cas_auth", ConcertoCasAuth::Engine)
 
-        # Create a hash with all the available Concerto config options
-        config_options = {:cas_host => 
-          ["cas.example.org", "Defines the host of your CAS server"],
-          :cas_url => 
-          ["https://cas.example.org/cas","Defines the url of your CAS server"],
-          :cas_uid_key => 
-          ["user", "Your user's unique identifier."],
-          :cas_email_key =>
-          ["email", "The data attribute containing user email address"],
-          :cas_first_name_key =>
-          ["first_name", "The data attribute containing user first name"],
-          :cas_last_name_key =>
-          ["last_name", "The data attribute containing user last name"]
-        }
-
-        # Add our Concerto config options to the main application
-        config_options.each do |key, value|
-          add_config(key.to_s, value.first,
-                    :name => key.to_s[3..-1],
-                    :value_type => "string",
-                    :category => "CAS User Authentication",
-                    :description => value.last)
-        end
+        ConcertoConfig.make_concerto_config("cas_url", "https://cas.example.org/cas", :value_type => "string", :value_default => "https://cas.example.org/cas", :category => 'CAS User Authentication', :seq_no => 1, :description =>"Defines the url of your CAS server")
+        ConcertoConfig.make_concerto_config("cas_uid_key", "user", :value_type => "string", :value_default => "user", :category => 'CAS User Authentication', :seq_no => 2, :description =>"Your user's unique identifier.")
+        ConcertoConfig.make_concerto_config("cas_email_key", "email", :value_type => "string", :value_default => "email", :category => 'CAS User Authentication', :seq_no => 3, :description =>"The data attribute containing user email address")
+        ConcertoConfig.make_concerto_config("cas_first_name_key", "first_name", :value_type => "string", :value_default => "first_name", :category => 'CAS User Authentication', :seq_no => 4, :description =>"The data attribute containing user first name")
+        ConcertoConfig.make_concerto_config("cas_last_name_key", "last_name", :value_type => "string", :value_default => "last_name", :category => 'CAS User Authentication', :seq_no => 5, :description =>"The data attribute containing user last name")
 
         # View hook to override Devise sign in links in the main application
-        add_view_hook "ApplicationController", :signin_hook, 
+        add_view_hook "ApplicationController", :signin_hook,
           :partial => "concerto_cas_auth/omniauth_cas/signin"
 
       end
