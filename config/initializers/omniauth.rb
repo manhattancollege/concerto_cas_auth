@@ -12,14 +12,14 @@ ConcertoConfig.make_concerto_config("cas_uid_key", "user",
   :value_default => "user", 
   :category => 'CAS User Authentication', 
   :seq_no => 2, 
-  :description =>"Your user's unique identifier.")
+  :description =>'The CAS field name containing user login names (uid, username,email,etc)')
 
 ConcertoConfig.make_concerto_config("cas_email_key", "email", 
   :value_type => "string", 
   :value_default => "email", 
   :category => 'CAS User Authentication', 
   :seq_no => 3, 
-  :description =>"The data attribute containing user email address")
+  :description =>'The CAS field name containing user email addresses (email, uid,etc)')
 
 # Store omniauth config values from main application's ConcertoConfig
 omniauth_config = {
