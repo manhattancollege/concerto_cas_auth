@@ -11,8 +11,8 @@ module ConcertoCasAuth
       omniauth_keys = ConcertoCasAuth::Engine.config.omniauth_keys
 
       # Check if an identity records exists for the user attempting to sign in
-      if identity = ConcertoIdentity::Identity.find_by_user_id(
-                                            cas_hash[omniauth_keys["uid_key"]])
+      if identity = ConcertoIdentity::Identity.find_by_external_id(
+                                            cas_hash.extra[omniauth_keys[:uid_key]])
         # Return the matching user record
         return identity.user
       else
@@ -22,14 +22,14 @@ module ConcertoCasAuth
         # Set user attributes
 
         # First name is required for user validation
-        if !cas_hash[omniauth_keys["first_name_key"]].nil?
-          user.first_name = cas_hash[omniauth_keys["first_name_key"]]
+        if !cas_hash.extra[omniauth_keys[:first_name_key]].nil?
+          user.first_name = cas_hash.extra[omniauth_keys[:first_name_key]]
         else 
-          user.first_name = cas_hash[omniauth_keys["uid_key"]]
+          user.first_name = cas_hash.extra[omniauth_keys[:uid_key]]
         end
 
         # Email is required for user validation
-        user.email = cas_hash[omniauth_keys["email_key"]]
+        user.email = cas_hash.info[omniauth_keys[:email_key]]
 
         # Set user admin flag to false
         user.is_admin = false
@@ -64,7 +64,7 @@ module ConcertoCasAuth
           # Create a matching identity to track our new user for future 
           #   sessions and return our new user record 
           ConcertoIdentity::Identity.create(provider: "cas", 
-            external_id: cas_hash[omniauth_keys["uid_key"]], 
+            external_id: cas_hash.extra[omniauth_keys[:uid_key]], 
             user_id: user.id)
           return user
         else
