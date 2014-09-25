@@ -64,7 +64,7 @@ module ConcertoCasAuth
           # Create a matching identity to track our new user for future 
           #   sessions and return our new user record 
           ConcertoIdentity::Identity.create(provider: "cas", 
-            external_id: cash_hash[omniauth_keys["uid_key"]], 
+            external_id: cas_hash[omniauth_keys["uid_key"]], 
             user_id: user.id)
           return user
         else
