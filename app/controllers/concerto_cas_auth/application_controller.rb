@@ -16,6 +16,10 @@ module ConcertoCasAuth
         # Return the matching user record
         return identity.user
       else
+	### keroism: TODO: read options from config to enable/disable account creation ###
+	flash.notice = "Account creation disabled, please contact your concerto admin for an account."
+	return nil
+=begin
         # Add a new user via omniauth cas details
         user = User.new
 
@@ -73,6 +77,7 @@ module ConcertoCasAuth
             #{user.errors.full_messages.to_sentence}."
           return nil
         end
+=end
       end
     end
 
