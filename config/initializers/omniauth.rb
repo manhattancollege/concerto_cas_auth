@@ -28,13 +28,21 @@ ConcertoConfig.make_concerto_config("cas_first_name_key", "firstname",
   :seq_no => 4,
   :description =>'The CAS field name containing user email addresses (email, uid,etc)')
 
+ConcertoConfig.make_concerto_config("cas_whitelist", "",
+  :value_type => "text",
+  :value_default => "",
+  :category => 'CAS User Authentication',
+  :seq_no => 5,
+  :description =>'A list of email addresses of CAS accounts allowed to be created')
+
 # Store omniauth config values from main application's ConcertoConfig
 omniauth_config = {
   :host => URI.parse(ConcertoConfig[:cas_url]).host,
   :url => ConcertoConfig[:cas_url],
   :uid_key => ConcertoConfig[:cas_uid_key],
   :email_key => ConcertoConfig[:cas_email_key],
-  :first_name_key => ConcertoConfig[:cas_first_name_key]
+  :first_name_key => ConcertoConfig[:cas_first_name_key],
+  :whitelist => ConcertoConfig[:cas_whitelist],
 }
 
 # configure omniauth-cas gem based on specified yml configs
