@@ -16,7 +16,9 @@ module ConcertoCasAuth
         # Return the matching user record
         return identity.user
       else
-        whitelisted = omniauth_keys[:cas_whitelist].split('\n')
+        # Split whitelist by line
+        whitelisted = omniauth_keys[:whitelist].split('\n')
+        # Check if user email is on whitelist
         if whitelisted.include? cas_hash.info[omniauth_keys[:email_key]]
           # Add a new user via omniauth cas details
           user = User.new
@@ -77,6 +79,7 @@ module ConcertoCasAuth
           end
         else
           flash.notice = "Account creation disabled, please contact your concerto admin for an account."
+          return nil
         end
       end
     end
