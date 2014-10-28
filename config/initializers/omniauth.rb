@@ -26,7 +26,8 @@ omniauth_config = {
   :host => URI.parse(ConcertoConfig[:cas_url]).host,
   :url => ConcertoConfig[:cas_url],
   :uid_key => ConcertoConfig[:cas_uid_key],
-  :email_key => ConcertoConfig[:cas_email_key]
+  :email_key => ConcertoConfig[:cas_email_key],
+  :callback_url => "/auth/cas/callback"
 }
 
 # configure omniauth-cas gem based on specified yml configs
