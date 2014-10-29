@@ -29,7 +29,11 @@ module ConcertoCasAuth
         end
 
         # Email is required for user validation
-        user.email = cas_hash[omniauth_keys["email_key"]]
+        if !cas_hash[omniauth_keys["email_key"]].nil?
+          user.email = cas_hash[omniauth_keys["email_key"]]
+        else 
+          user.email = cas_hash[omniauth_keys["uid_key"]] + "@" + omniauth_keys["email_suffix"].tr("@", "")
+        end
 
         # Set user admin flag to false
         user.is_admin = false
