@@ -22,14 +22,19 @@ module ConcertoCasAuth
         # Set user attributes
 
         # First name is required for user validation
-        if !cas_hash[omniauth_keys["first_name_key"]].nil?
-          user.first_name = cas_hash[omniauth_keys["first_name_key"]]
+        if !cas_hash[omniauth_keys[:first_name_key]].nil?
+          user.first_name = cas_hash[omniauth_keys[:first_name_key]]
         else 
           user.first_name = cas_hash[omniauth_keys[:uid_key]]
         end
 
         # Email is required for user validation
-        user.email = cas_hash[omniauth_keys["email_key"]]
+        if !cas_hash[omniauth_keys[:email_key]].nil?
+          user.email = cas_hash[omniauth_keys[:email_key]]
+        else
+          user.email = cas_hash[omniauth_keys[:uid_key]] + 
+                       "@" + omniauth_keys[:email_suffix].tr("@", "")
+        end
 
         # Set user admin flag to false
         user.is_admin = false
