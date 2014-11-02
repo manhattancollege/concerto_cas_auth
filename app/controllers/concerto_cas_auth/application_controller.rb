@@ -11,7 +11,7 @@ module ConcertoCasAuth
       omniauth_keys = ConcertoCasAuth::Engine.config.omniauth_keys
 
       # Check if an identity records exists for the user attempting to sign in
-      if identity = ConcertoIdentity::Identity.find_by_user_id(
+      if identity = ConcertoIdentity::Identity.find_by_external_id(
                                             cas_hash[omniauth_keys[:uid_key]])
         # Return the matching user record
         return identity.user
