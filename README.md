@@ -23,3 +23,5 @@ Configuring the plugin
 6. The CAS email key is required and will be used to access the email address returned by your CAS server upon authentication.
 7. After saving these settings, you will need to restart your Concerto web server.
 8. Your log in links at the top of the page should now point to your CAS authentication. 
+
+note: This plugin is essentially a wrapper around [omniauth-cas](https://github.com/dlindahl/omniauth-cas) with added logic for creating Concerto user accounts with the returned CAS information. Feel free to follow the omniauth-cas link and see a more detailed description of the configuration items. 
