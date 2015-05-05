@@ -12,28 +12,34 @@ module ConcertoCasAuth
 
       # Check if an identity records exists for the user attempting to sign in
       if identity = ConcertoIdentity::Identity.find_by_external_id(
-                                            cas_hash.extra[omniauth_keys[:uid_key]])
+                                            cas_hash[omniauth_keys[:uid_key]])
         # Return the matching user record
         return identity.user
       else
         # Split whitelist by line
-        whitelisted = omniauth_keys[:whitelist].split('\n')
+        whitelisted = omniauth_keys[:whitelist].split("\n")
+	whitelisted.collect{|x| x.strip!}
         # Check if user email is on whitelist
-        if whitelisted.include? cas_hash.info[omniauth_keys[:email_key]]
+        if whitelisted.include? cas_hash[omniauth_keys[:uid_key]]
           # Add a new user via omniauth cas details
           user = User.new
 
           # Set user attributes
 
-          # First name is required for user validation
-          if !cas_hash.extra[omniauth_keys[:first_name_key]].nil?
-            user.first_name = cas_hash.extra[omniauth_keys[:first_name_key]]
-          else 
-            user.first_name = cas_hash.extra[omniauth_keys[:uid_key]]
-          end
+        # First name is required for user validation
+        if !cas_hash[omniauth_keys[:first_name_key]].nil?
+          user.first_name = cas_hash[omniauth_keys[:first_name_key]]
+        else 
+          user.first_name = cas_hash[omniauth_keys[:uid_key]]
+        end
 
-          # Email is required for user validation
-          user.email = cas_hash.info[omniauth_keys[:email_key]]
+        # Email is required for user validation
+        if !cas_hash[omniauth_keys[:email_key]].nil?
+          user.email = cas_hash[omniauth_keys[:email_key]]
+        else
+          user.email = cas_hash[omniauth_keys[:uid_key]] + 
+                       "@" + omniauth_keys[:email_suffix].tr("@", "")
+        end
 
           # Set user admin flag to false
           user.is_admin = false
@@ -63,20 +69,20 @@ module ConcertoCasAuth
               :level => Membership::LEVELS[:leader])
           end
 
-          # Attempt to save our new user
-          if user.save
-            # Create a matching identity to track our new user for future 
-            #   sessions and return our new user record 
-            ConcertoIdentity::Identity.create(provider: "cas", 
-              external_id: cas_hash.extra[omniauth_keys[:uid_key]], 
-              user_id: user.id)
-            return user
-          else
-            # User save failed, an error occurred 
+        # Attempt to save our new user
+        if user.save
+          # Create a matching identity to track our new user for future 
+          #   sessions and return our new user record 
+          ConcertoIdentity::Identity.create(provider: "cas", 
+            external_id: cas_hash[omniauth_keys[:uid_key]], 
+            user_id: user.id)
+          return user
+        else
             flash.notice = "Failed to sign in with CAS. 
               #{user.errors.full_messages.to_sentence}."
             return nil
-          end
+        end
+
         else
           flash.notice = "Account creation disabled, please contact your concerto admin for an account."
           return nil
