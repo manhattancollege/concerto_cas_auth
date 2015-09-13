@@ -20,6 +20,10 @@ module ConcertoCasAuth
         add_view_hook "ApplicationController", :signin_hook,
           :partial => "concerto_cas_auth/omniauth_cas/signin"
 
+        # Controller hook to supply a redirect route (example: non public Concerto instances)
+        add_controller_hook "ApplicationController", :auth_plugin, :before do
+          @auth_url = "/auth/cas"
+        end
       end
     end
 
