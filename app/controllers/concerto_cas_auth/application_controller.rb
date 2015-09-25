@@ -9,7 +9,7 @@ module ConcertoCasAuth
     def find_from_omniauth(cas_hash)
       # Get configuration options for customized CAS return value identifiers
       omniauth_keys = ConcertoCasAuth::Engine.config.omniauth_keys
-      omniauth_keys[:uid_key].downcase!
+      cas_hash[omniauth_keys[:uid_key]].downcase!
 
       # Check if an identity records exists for the user attempting to sign in
       if identity = ConcertoIdentity::Identity.find_by_external_id(
